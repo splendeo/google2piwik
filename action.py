@@ -24,7 +24,7 @@ class Action(object):
     
     def export(self, base_path):
         path = base_path + self.path
-        title = self.titles[0] if len(self.titles) > 0 else ""
+        title = self.titles[0] if (len(self.titles) > 0 and self.titles[0] is not None) else ""
         
         type_url = ( path, self.get_hash(path), TYPE_ACTION_URL )
 
