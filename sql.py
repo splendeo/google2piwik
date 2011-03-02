@@ -101,19 +101,19 @@ def check_tables(table_prefix):
     return failed
 
 def check_site(site_id):
-    select_site_sql = "SELECT count(*) from {SITE_TABLE} WHERE idsite = %s".format(SITE_TABLE = T_SITE)
+    select_site_sql = "SELECT count(*) from {SITE_TABLE} WHERE idsite = %s".replace("{SITE_TABLE}", T_SITE)
     cursor.execute(select_site_sql, site_id)
     return cursor.fetchone()[0] == 1
 
 def update_site_ts_created(site_id, date):
     current_start = datetime.datetime(date.year, date.month, date.day)
 
-    select_site_sql = "SELECT ts_created from {SITE_TABLE} WHERE idsite = %s".format(SITE_TABLE = T_SITE)
+    select_site_sql = "SELECT ts_created from {SITE_TABLE} WHERE idsite = %s".replace("{SITE_TABLE}", T_SITE)
     cursor.execute(select_site_sql, site_id)
     ts_created = cursor.fetchone()[0]
     
     if ts_created > current_start:
-        update_site_sql = "UPDATE {SITE_TABLE} SET ts_created = %s WHERE idsite = %s".format(SITE_TABLE = T_SITE)
+        update_site_sql = "UPDATE {SITE_TABLE} SET ts_created = %s WHERE idsite = %s".replace("{SITE_TABLE}", T_SITE)
         cursor.execute(update_site_sql, (current_start, site_id))
 
 def nb_visits_day(date, site_id):
