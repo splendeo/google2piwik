@@ -95,7 +95,7 @@ def check_tables(table_prefix):
     for table in ["log_action", "log_visit", "log_link_visit_action"]:
         table_name = table if not table_prefix else "%s_%s" % (table_prefix, table)
         try:
-            cursor.execute("SELECT * FROM {name}".format(name=table_name))
+            cursor.execute("SELECT * FROM %s" % (table_name))
         except MySQLdb.ProgrammingError:
             failed.append(table_name)
     return failed
@@ -133,6 +133,6 @@ def update_visit_actions(start_date, end_date):
                     SET lv.visit_total_actions = m.visit_actions
                     WHERE visit_server_date >= %s
                       AND visit_server_date <= %s
-                """.format(LV = T_LOGV, LVA = T_LOGVA)
+                """.replace("{LV}", T_LOGV).replace("{LVA}", T_LOGVA)
     
     cursor.execute(raw_sql, (start_date, end_date))
